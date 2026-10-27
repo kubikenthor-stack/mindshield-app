@@ -25,20 +25,23 @@ jobs:
           channel: 'stable'
           cache: true
 
-      - name: Fix Android Embedding & Get Dependencies
+      - name: Install dependencies
+        run: flutter pub get
+        working-directory: ./app_tam_ly_khkt
+
+      - name: Fix minSdkVersion to 24
         run: |
           cd app_tam_ly_khkt
-          # Tự động nâng cấp Android embedding lên v2 nếu thiếu file Manifest
-          flutter create . --org com.mindshield --project-name app_tam_ly_khkt --platforms=android
-          flutter pub get
+          # Tự động cập nhật minSdkVersion từ 21 lên 24 trong file build.gradle để tương thích plugin mới
+          sed -i 's/minSdkVersion flutter.minSdkVersion/minSdkVersion 24/g' android/app/build.gradle || true
+          sed -i 's/minSdk = flutter.minSdkVersion/minSdk = 24/g' android/app/build.gradle || true
 
       - name: Build APK Release
-        run: |
-          cd app_tam_ly_khkt
-          flutter build apk --release
+        run: flutter build apk --release
+        working-directory: ./app_tam_ly_khkt
 
       - name: Upload APK Artifact
         uses: actions/upload-artifact@v4
         with:
           name: app-release
-          path: 'app_tam_ly_khkt/build/app/outputs/flutter-apk/app-release.apk'
+          path: app_tam_ly_khkt/build/app/outputs/flutter-apk/app-release.apk
