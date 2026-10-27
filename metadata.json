@@ -1,0 +1,11 @@
+{
+  "name": "Remix MindCare - Ứng Dụng Tâm Lý Học Đường KHKT",
+  "description": "Ứng dụng chăm sóc sức khỏe tinh thần MindCare với nhận diện cảm xúc khuôn mặt, trợ lý tâm lý AI thấu cảm và cấu trúc dự án Flutter KHKT.",
+  "requestFramePermissions": [
+    "camera",
+    "microphone"
+  ],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
