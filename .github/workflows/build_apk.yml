@@ -24,14 +24,23 @@ jobs:
           channel: 'stable'
           cache: true
 
+      - name: Find project root and get dependencies
+        run: |
+          # Tự động tìm thư mục chứa pubspec.yaml
+          PROJECT_DIR=$(find . -name "pubspec.yaml" -maxdepth 3 -exec dirname {} \; | head -n 1)
+          echo "PROJECT_DIR=$PROJECT_DIR" >> $GITHUB_ENV
+          echo "Found Flutter project at: $PROJECT_DIR"
+
       - name: Install dependencies
         run: flutter pub get
+        working-directory: ${{ env.PROJECT_DIR }}
 
       - name: Build APK
         run: flutter build apk --release
+        working-directory: ${{ env.PROJECT_DIR }}
 
       - name: Upload APK Artifact
         uses: actions/upload-artifact@v4
         with:
           name: app-release
-          path: build/app/outputs/flutter-apk/app-release.apk
+          path: '**/build/app/outputs/flutter-apk/app-release.apk'
