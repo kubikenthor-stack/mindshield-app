@@ -25,16 +25,20 @@ jobs:
           channel: 'stable'
           cache: true
 
-      - name: Install dependencies
-        run: flutter pub get
-        working-directory: ./app_tam_ly_khkt
+      - name: Fix Android Embedding & Get Dependencies
+        run: |
+          cd app_tam_ly_khkt
+          # Tự động nâng cấp Android embedding lên v2 nếu thiếu file Manifest
+          flutter create . --org com.mindshield --project-name app_tam_ly_khkt --platforms=android
+          flutter pub get
 
-      - name: Build APK
-        run: flutter build apk --release
-        working-directory: ./app_tam_ly_khkt
+      - name: Build APK Release
+        run: |
+          cd app_tam_ly_khkt
+          flutter build apk --release
 
       - name: Upload APK Artifact
         uses: actions/upload-artifact@v4
         with:
           name: app-release
-          path: app_tam_ly_khkt/build/app/outputs/flutter-apk/app-release.apk
+          path: 'app_tam_ly_khkt/build/app/outputs/flutter-apk/app-release.apk'
