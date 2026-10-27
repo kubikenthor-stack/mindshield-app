@@ -8,10 +8,6 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: ./app_tam_ly_khkt
-
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -31,12 +27,14 @@ jobs:
 
       - name: Install dependencies
         run: flutter pub get
+        working-directory: ./app_tam_ly_khkt
 
       - name: Build APK
-        run: flutter build apk --release --no-pub
+        run: flutter build apk --release
+        working-directory: ./app_tam_ly_khkt
 
       - name: Upload APK Artifact
         uses: actions/upload-artifact@v4
         with:
           name: app-release
-          path: './build/app/outputs/flutter-apk/app-release.apk'
+          path: app_tam_ly_khkt/build/app/outputs/flutter-apk/app-release.apk
